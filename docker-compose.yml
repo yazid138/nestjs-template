@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  nest-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nest-api
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - nest-mongo
+    env_file:
+      - .env
+
+  nest-mongo:
+    image: prismagraphql/mongo-single-replica:4.2.17-bionic
+    container_name: nest-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      INIT_WAIT_SEC: 3
+
+#  nest-postgres:
+#    image: postgres:14
+#    container_name: nest-postgres
+#    restart: always
+#    ports:
+#      - 5432:5432
+#    env_file:
+#      - .env
+#    volumes:
+#      - nest-postgres:/var/lib/postgresql/data
+
+#volumes:
+#  nest-postgres:
+#    name: nest-postgres-db
