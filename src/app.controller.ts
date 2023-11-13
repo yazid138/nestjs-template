@@ -3,8 +3,10 @@ import { ConfigService } from '@nestjs/config';
 import { HealthCheck } from '@nestjs/terminus';
 import { HealthCheckService } from '@nestjs/terminus/dist/health-check';
 import { MemoryHealthIndicator } from '@nestjs/terminus/dist/health-indicator';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller()
+@ApiTags('Index')
 export class AppController {
   constructor(
     private configService: ConfigService,
