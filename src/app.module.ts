@@ -11,6 +11,7 @@ import Winston from 'winston';
 import WinstonDialyRotateFile from 'winston-daily-rotate-file';
 import { RequestContextModule } from '@medibloc/nestjs-request-context';
 import { MyContext } from './common/context/my-context';
+import { LaporanModule } from './modules/laporan/laporan.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { MyContext } from './common/context/my-context';
     AuthModule,
     GreetingsModule,
     UsersModule,
+    LaporanModule,
   ],
   controllers: [AppController],
   providers: [],

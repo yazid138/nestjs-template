@@ -3,7 +3,6 @@ import {
   NestInterceptor,
   ExecutionContext,
   CallHandler,
-  HttpStatus,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -33,15 +32,17 @@ export class ResponseTransformInterceptor<T>
     reqCtx.params = req.params;
     reqCtx.query = req.query;
     return next.handle().pipe(
-      map((response) => {
-        const { statusCode, message, data } = response;
+      map((r) => {
+        const statusCode = r?.statusCode;
         const code = statusCode || res.statusCode;
         res.status(code);
-        return {
+        const response: Response<any> = {
           statusCode: code,
-          message,
-          data: data || response,
         };
+        if (r?.data) response.data = r.data;
+        if (r?.message) response.message = r.message;
+        if (!r?.data && !r?.message) response.data = r;
+        return response;
       }),
     );
   }

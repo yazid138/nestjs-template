@@ -13,6 +13,7 @@ import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { ResponseTransformInterceptor } from './common/interceptors/response-transform.interceptor';
 import cookieParser from 'cookie-parser';
+import { AllExceptionFilter } from './common/filters/all-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -38,7 +39,10 @@ async function bootstrap() {
   app.use(cookieParser());
 
   // set CORS
-  app.enableCors();
+  app.enableCors({
+    credentials: true,
+    origin: true,
+  });
 
   // Starts listening for shutdown hooks
   app.enableShutdownHooks();
@@ -48,12 +52,14 @@ async function bootstrap() {
     new ValidationPipe({
       transform: true,
       whitelist: true,
-      forbidUnknownValues: true, // Temporary Solve: SQL Injection and Cross-site Scripting in class-validator - https://github.com/advisories/GHSA-fj58-h2fr-3pp2
     }),
   );
 
   // Global Interceptors
   app.useGlobalInterceptors(new ResponseTransformInterceptor());
+
+  // Global Filters
+  app.useGlobalFilters(new AllExceptionFilter());
 
   // Swagger Configuration
   const swaggerConfig = new DocumentBuilder()

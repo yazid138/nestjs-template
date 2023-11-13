@@ -12,7 +12,8 @@ export class UsersController {
 
   @Post()
   async register(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    await this.usersService.create(createUserDto);
+    return { message: 'User created' };
   }
 
   @Auth()
