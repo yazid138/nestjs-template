@@ -6,28 +6,34 @@ import {
   Param,
   Post,
   Req,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { LaporanService } from './laporan.service';
 import { CreateLaporanDto } from './dto/create-laporan.dto';
-import { Auth } from '../auth/decorators/auth.decorator';
+import { UseAuth } from '../auth/decorators/auth.decorator';
 import { User } from '../users/interfaces/user.interface';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { UseGuards } from '@nestjs/common/decorators';
 import { LaporanGuard } from './guards/laporan.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
-@Auth()
+@UseAuth()
 @Controller('laporan')
 @ApiTags('Laporan')
 export class LaporanController {
   constructor(private readonly laporanService: LaporanService) {}
 
   @Post()
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('dokumen'))
   async create(
     @Req() req: Request & { user: User },
     @Body() data: CreateLaporanDto,
+    @UploadedFile() file: Express.Multer.File,
   ) {
     const user = req.user;
-    await this.laporanService.create(user, data);
+    await this.laporanService.create(user, file, data);
     return { message: 'Laporan berhasil ditambah' };
   }
 

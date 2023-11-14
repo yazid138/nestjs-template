@@ -5,18 +5,27 @@ import { Laporan } from './interfaces/laporan.interface';
 import { Role } from '../auth/enums/role.enum';
 import { CreateLaporanDto } from './dto/create-laporan.dto';
 import { User } from '../users/interfaces/user.interface';
+import { DocumentService } from '../document/document.service';
 
 @Injectable()
 export class LaporanService {
-  constructor(@Inject(LAPORAN_MODEL) private laporanModel: Model<Laporan>) {}
+  constructor(
+    @Inject(LAPORAN_MODEL) private laporanModel: Model<Laporan>,
+    private documentService: DocumentService,
+  ) {}
 
-  create(user: User, data: CreateLaporanDto) {
-    const laporan = new this.laporanModel({ ...data, role: user.role });
+  async create(user: User, file: Express.Multer.File, data: CreateLaporanDto) {
+    const media = await this.documentService.create(file);
+    const laporan = new this.laporanModel({
+      ...data,
+      role: user.role,
+      dokumen: media._id,
+    });
     return laporan.save();
   }
 
   findAll(role: Role) {
-    return this.laporanModel.find({ role }).exec();
+    return this.laporanModel.find({ role }).populate('dokumen').exec();
   }
 
   findById(_id: string, role: Role) {

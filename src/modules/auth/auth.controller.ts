@@ -15,7 +15,7 @@ import { ResponseTransformInterceptor } from 'src/common/interceptors/response-t
 import { LoginDto } from './dto/login.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Request, Response } from 'express';
-import { Auth } from './decorators/auth.decorator';
+import { UseAuth } from './decorators/auth.decorator';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -41,7 +41,7 @@ export class AuthController {
       });
   }
 
-  @Auth()
+  @UseAuth()
   @Delete('logout')
   async logout(@Res() res: Response) {
     return res.clearCookie('auth-cookie').json({
