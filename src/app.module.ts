@@ -5,7 +5,6 @@ import { WinstonModule } from 'nest-winston';
 import { AppController } from './app.controller';
 import { configValidationSchema } from './config/config.schema';
 import { AuthModule } from './modules/auth/auth.module';
-import { GreetingsModule } from './modules/greetings/greetings.module';
 import { UsersModule } from './modules/users/users.module';
 import Winston from 'winston';
 import WinstonDialyRotateFile from 'winston-daily-rotate-file';
@@ -44,7 +43,6 @@ import { DocumentModule } from './modules/document/document.module';
       ],
     }),
     AuthModule,
-    GreetingsModule,
     UsersModule,
     LaporanModule,
     DocumentModule,
