@@ -34,16 +34,14 @@ export class AllExceptionFilter implements ExceptionFilter {
         if (typeof exception.getResponse() === 'string')
           response.message = exception.getResponse() as string;
         else {
-          const { message, error, statusCode } = exception.getResponse() as {
-            statusCode: number;
-            message: string[];
-            error: string;
-          };
-          response = {
-            statusCode,
-            message: error,
-            error: message,
-          };
+          const res = exception.getResponse() as any;
+          if (exception.message === 'Bad Request Exception')
+            response = {
+              statusCode: res.statusCode,
+              message: res.error,
+              error: res.message,
+            };
+          else response.message = res.message;
         }
         break;
       }

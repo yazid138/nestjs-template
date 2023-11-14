@@ -14,6 +14,7 @@ import { AppModule } from './app.module';
 import { ResponseTransformInterceptor } from './common/interceptors/response-transform.interceptor';
 import cookieParser from 'cookie-parser';
 import { AllExceptionFilter } from './common/filters/all-exception.filter';
+import { useContainer } from 'class-validator';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -57,6 +58,8 @@ async function bootstrap() {
 
   // Global Interceptors
   app.useGlobalInterceptors(new ResponseTransformInterceptor());
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   // Global Filters
   app.useGlobalFilters(new AllExceptionFilter());

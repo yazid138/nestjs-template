@@ -7,7 +7,7 @@ import { configValidationSchema } from './config/config.schema';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import Winston from 'winston';
-import WinstonDialyRotateFile from 'winston-daily-rotate-file';
+import WinstonDailyRotateFile from 'winston-daily-rotate-file';
 import { RequestContextModule } from '@medibloc/nestjs-request-context';
 import { MyContext } from './common/context/my-context';
 import { LaporanModule } from './modules/laporan/laporan.module';
@@ -33,7 +33,7 @@ import { DocumentModule } from './modules/document/document.module';
         });
       }),
       transports: [
-        new WinstonDialyRotateFile({
+        new WinstonDailyRotateFile({
           dirname: 'logs',
           zippedArchive: true,
           filename: 'errors-%DATE%.log',
