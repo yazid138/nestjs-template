@@ -2,7 +2,6 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from '../auth.service';
@@ -19,7 +18,6 @@ export class JwtAuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) throw new UnauthorizedException();
-
     try {
       const data = await this.authService.validateJwt(token);
       if (data) {
@@ -28,17 +26,16 @@ export class JwtAuthGuard implements CanActivate {
         ctx.user = user;
       }
     } catch (e) {
-      Logger.error(e);
       throw new UnauthorizedException();
     }
     return true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers['authorization']?.split(' ') ?? [
+    const [_, token] = request.headers['authorization']?.split(' ') ?? [
       '',
       request.cookies['auth-cookie'],
     ];
-    return type === 'Bearer' ? token : token ? token : undefined;
+    return token ? token : undefined;
   }
 }

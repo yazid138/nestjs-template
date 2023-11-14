@@ -22,12 +22,12 @@ export class AuthService {
     };
   }
 
-  async findUserById(id: string) {
-    return await this.usersService.findById(id);
+  findUserById(id: string) {
+    return this.usersService.findById(id);
   }
 
-  async validateJwt(jwtToken: string) {
-    return await this.jwtService.verifyAsync(jwtToken, {
+  validateJwt(jwtToken: string) {
+    return this.jwtService.verifyAsync(jwtToken, {
       secret: this.configService.get<string>('APP_KEY'),
     });
   }

@@ -29,13 +29,17 @@ export class AuthController {
     @Res() res: Response,
   ) {
     const payload = req.user;
-    return res
+    res
       .cookie('auth-cookie', payload.accessToken, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
       })
       .json({
         statusCode: HttpStatus.OK,
+        data: {
+          type: 'Bearer',
+          accessToken: payload.accessToken,
+        },
         message: 'Berhasil login',
       });
   }
@@ -43,7 +47,7 @@ export class AuthController {
   @UseAuth()
   @Delete('logout')
   async logout(@Res() res: Response) {
-    return res.clearCookie('auth-cookie').json({
+    res.clearCookie('auth-cookie').json({
       statusCode: HttpStatus.OK,
       message: 'Berhasil logout',
     });
