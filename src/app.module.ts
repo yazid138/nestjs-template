@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TerminusModule } from '@nestjs/terminus';
 import { WinstonModule } from 'nest-winston';
@@ -12,6 +12,7 @@ import { RequestContextModule } from '@medibloc/nestjs-request-context';
 import { MyContext } from './common/context/my-context';
 import { LaporanModule } from './modules/laporan/laporan.module';
 import { DocumentModule } from './modules/document/document.module';
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
 
 @Module({
   imports: [
@@ -50,4 +51,8 @@ import { DocumentModule } from './modules/document/document.module';
   controllers: [AppController],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
