@@ -12,11 +12,11 @@ import {
 import { LaporanService } from './laporan.service';
 import { CreateLaporanDto } from './dto/create-laporan.dto';
 import { UseAuth } from '../auth/decorators/auth.decorator';
-import { User } from '../users/interfaces/user.interface';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { UseGuards } from '@nestjs/common/decorators';
 import { LaporanGuard } from './guards/laporan.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { UserDocument } from '../users/schemas/user.schema';
 
 @UseAuth()
 @Controller('laporan')
@@ -28,7 +28,7 @@ export class LaporanController {
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('document'))
   async create(
-    @Req() req: Request & { user: User },
+    @Req() req: Request & { user: UserDocument },
     @Body() data: CreateLaporanDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
@@ -38,7 +38,7 @@ export class LaporanController {
   }
 
   @Get()
-  getAll(@Req() req: Request & { user: User }) {
+  getAll(@Req() req: Request & { user: UserDocument }) {
     const user = req.user;
     return this.laporanService.findAll(user.role);
   }

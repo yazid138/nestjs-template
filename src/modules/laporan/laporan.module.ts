@@ -1,14 +1,18 @@
 import { Module } from '@nestjs/common';
 import { LaporanController } from './laporan.controller';
 import { LaporanService } from './laporan.service';
-import { laporanModelProvider } from './laporan.provider';
-import { DatabaseModule } from '../../database/database.module';
 import { AuthModule } from '../auth/auth.module';
 import { DocumentModule } from '../document/document.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Laporan, LaporanSchema } from './schemas/laporan.schema';
 
 @Module({
-  imports: [DatabaseModule, AuthModule, DocumentModule],
+  imports: [
+    MongooseModule.forFeature([{ name: Laporan.name, schema: LaporanSchema }]),
+    AuthModule,
+    DocumentModule,
+  ],
   controllers: [LaporanController],
-  providers: [LaporanService, laporanModelProvider],
+  providers: [LaporanService],
 })
 export class LaporanModule {}

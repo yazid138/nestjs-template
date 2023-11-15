@@ -1,13 +1,22 @@
-import { Schema, Types } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument, Types } from 'mongoose';
+import { Chunk } from './chunk.schema';
 
-export const DocumentSchema = new Schema(
-  {
-    name: String,
-    path: String,
-    type: String,
-    chunks: { type: Types.ObjectId, ref: 'Chunk' },
-  },
-  {
-    timestamps: true,
-  },
-);
+export type DocDocument = HydratedDocument<Document>;
+
+@Schema({ timestamps: true })
+export class Document {
+  @Prop()
+  name: string;
+
+  @Prop()
+  path: string;
+
+  @Prop()
+  type: string;
+
+  @Prop({ type: Types.ObjectId, ref: Chunk.name })
+  chunk: Chunk;
+}
+
+export const DocumentSchema = SchemaFactory.createForClass(Document);

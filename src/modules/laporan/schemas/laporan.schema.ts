@@ -1,27 +1,30 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 import { Role } from '../../auth/enums/role.enum';
-import { Schema, Types } from 'mongoose';
+import { User } from '../../users/schemas/user.schema';
+import { Document } from '../../Document/schemas/document.schema';
 
-export const LaporanSchema = new Schema(
-  {
-    description: String,
-    document: {
-      type: Types.ObjectId,
-      ref: 'Document',
-    },
-    role: {
-      type: String,
-      enum: [Role.User, Role.Admin],
-    },
-    createdBy: {
-      type: Types.ObjectId,
-      ref: 'User',
-    },
-    updatedBy: {
-      type: Types.ObjectId,
-      ref: 'User',
-    },
-  },
-  {
-    timestamps: true,
-  },
-);
+export type LaporanDocument = HydratedDocument<Laporan>;
+
+@Schema({ timestamps: true, collection: 'laporan' })
+export class Laporan {
+  @Prop()
+  description: string;
+
+  @Prop({ type: Types.ObjectId, ref: Document.name })
+  document: Document;
+
+  @Prop()
+  role: Role;
+
+  @Prop()
+  password: string;
+
+  @Prop({ type: Types.ObjectId, ref: User.name })
+  createdBy: User;
+
+  @Prop({ type: Types.ObjectId, ref: User.name })
+  updatedBy: User;
+}
+
+export const LaporanSchema = SchemaFactory.createForClass(Laporan);

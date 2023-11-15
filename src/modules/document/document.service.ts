@@ -1,15 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { DOCUMENT_MODEL } from './document.provider';
+import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { CHUNK_MODEL } from './chunk/chunk.provider';
-import { Chunk } from './chunk/interfaces/chunk.interface';
-import { Document } from './interfaces/document.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { Chunk } from './schemas/chunk.schema';
+import { Document } from './schemas/document.schema';
 
 @Injectable()
 export class DocumentService {
   constructor(
-    @Inject(DOCUMENT_MODEL) private readonly documentModel: Model<Document>,
-    @Inject(CHUNK_MODEL) private readonly chunkModel: Model<Chunk>,
+    @InjectModel(Document.name) private readonly documentModel: Model<Document>,
+    @InjectModel(Chunk.name) private readonly chunkModel: Model<Chunk>,
   ) {}
 
   async create(document: Express.Multer.File) {

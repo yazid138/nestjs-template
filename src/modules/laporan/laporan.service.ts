@@ -1,25 +1,29 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
-import { LAPORAN_MODEL } from './laporan.provider';
-import { Laporan } from './interfaces/laporan.interface';
 import { Role } from '../auth/enums/role.enum';
 import { CreateLaporanDto } from './dto/create-laporan.dto';
-import { User } from '../users/interfaces/user.interface';
 import { DocumentService } from '../document/document.service';
+import { InjectModel } from '@nestjs/mongoose';
+import { Laporan } from './schemas/laporan.schema';
+import { UserDocument } from '../users/schemas/user.schema';
 
 @Injectable()
 export class LaporanService {
   constructor(
-    @Inject(LAPORAN_MODEL) private laporanModel: Model<Laporan>,
+    @InjectModel(Laporan.name) private laporanModel: Model<Laporan>,
     private documentService: DocumentService,
   ) {}
 
-  async create(user: User, file: Express.Multer.File, data: CreateLaporanDto) {
-    const media = await this.documentService.create(file);
+  async create(
+    user: UserDocument,
+    file: Express.Multer.File,
+    data: CreateLaporanDto,
+  ) {
+    const document = await this.documentService.create(file);
     const laporan = new this.laporanModel({
       ...data,
       role: user.role,
-      document: media._id,
+      document: document._id,
       createdBy: user._id,
       updatedBy: user._id,
     });
@@ -27,7 +31,10 @@ export class LaporanService {
   }
 
   findAll(role: Role) {
-    return this.laporanModel.find({ role }).populate('document').exec();
+    return this.laporanModel
+      .find({ role })
+      .populate({ path: 'document', select: '-chunk' })
+      .exec();
   }
 
   findById(_id: string, role: Role) {

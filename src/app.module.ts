@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TerminusModule } from '@nestjs/terminus';
 import { WinstonModule } from 'nest-winston';
 import { AppController } from './app.controller';
@@ -13,6 +13,7 @@ import { MyContext } from './common/context/my-context';
 import { LaporanModule } from './modules/laporan/laporan.module';
 import { DocumentModule } from './modules/document/document.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
@@ -23,6 +24,12 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
     RequestContextModule.forRoot({
       contextClass: MyContext,
       isGlobal: true,
+    }),
+    MongooseModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGO_URL'),
+      }),
     }),
     TerminusModule,
     WinstonModule.forRoot({
@@ -45,8 +52,8 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
     }),
     AuthModule,
     UsersModule,
-    LaporanModule,
     DocumentModule,
+    LaporanModule,
   ],
   controllers: [AppController],
   providers: [],

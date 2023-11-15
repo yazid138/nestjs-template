@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { LaporanService } from '../laporan.service';
 import { Request } from 'express';
-import { User } from '../../users/interfaces/user.interface';
 import { Types } from 'mongoose';
+import { UserDocument } from '../../users/schemas/user.schema';
 
 @Injectable()
 export class LaporanGuard implements CanActivate {
@@ -16,7 +16,7 @@ export class LaporanGuard implements CanActivate {
 
   async canActivate(ctx: ExecutionContext): Promise<boolean> {
     const http = ctx.switchToHttp();
-    const req = http.getRequest<Request & { user: User }>();
+    const req = http.getRequest<Request & { user: UserDocument }>();
     const user = req.user;
     const _id = req.params.id;
     if (!Types.ObjectId.isValid(_id))
