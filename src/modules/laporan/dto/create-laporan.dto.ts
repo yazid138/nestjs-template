@@ -7,5 +7,5 @@ export class CreateLaporanDto {
   description: string;
 
   @ApiProperty({ type: 'string', format: 'binary' })
-  dokumen: Express.Multer.File;
+  document: Express.Multer.File;
 }

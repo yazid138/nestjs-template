@@ -26,7 +26,7 @@ export class LaporanController {
 
   @Post()
   @ApiConsumes('multipart/form-data')
-  @UseInterceptors(FileInterceptor('dokumen'))
+  @UseInterceptors(FileInterceptor('document'))
   async create(
     @Req() req: Request & { user: User },
     @Body() data: CreateLaporanDto,

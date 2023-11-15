@@ -19,13 +19,15 @@ export class LaporanService {
     const laporan = new this.laporanModel({
       ...data,
       role: user.role,
-      dokumen: media._id,
+      document: media._id,
+      createdBy: user._id,
+      updatedBy: user._id,
     });
     return laporan.save();
   }
 
   findAll(role: Role) {
-    return this.laporanModel.find({ role }).populate('dokumen').exec();
+    return this.laporanModel.find({ role }).populate('document').exec();
   }
 
   findById(_id: string, role: Role) {

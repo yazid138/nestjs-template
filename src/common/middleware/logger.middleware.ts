@@ -16,7 +16,7 @@ export class LoggerMiddleware implements NestMiddleware {
       const diff = process.hrtime(startAt);
       const responseTime = diff[0] * 1e3 + diff[1] * 1e-6;
       const message = `${method} ${originalUrl} ${statusCode} ${responseTime}ms ${contentLength} - ${userAgent} ${ip}`;
-      if (statusCode >= 300) this.logger.error(message);
+      if (statusCode >= 400) this.logger.error(message);
       else this.logger.log(message);
     });
 
