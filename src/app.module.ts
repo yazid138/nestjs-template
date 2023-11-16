@@ -15,6 +15,7 @@ import { DocumentModule } from './modules/document/document.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LogModule } from './modules/log/log.module';
+import { UserExistsValidator } from './common/validation/user-exists.validator';
 
 @Module({
   imports: [
@@ -55,9 +56,10 @@ import { LogModule } from './modules/log/log.module';
     UsersModule,
     DocumentModule,
     LaporanModule,
+    LogModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [UserExistsValidator],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

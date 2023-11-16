@@ -11,4 +11,8 @@ export class LogService {
     const createdLog = new this.logModel(log);
     return createdLog.save();
   }
+
+  findAll() {
+    return this.logModel.find().exec();
+  }
 }

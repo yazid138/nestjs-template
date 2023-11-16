@@ -18,7 +18,7 @@ import { LaporanGuard } from './guards/laporan.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserDocument } from '../users/schemas/user.schema';
 import { LogService } from '../log/log.service';
-import { Level } from '../log/enums/level.enum';
+import { LevelEnum } from '../log/enums/level.enum';
 
 @UseAuth()
 @Controller('laporan')
@@ -42,7 +42,7 @@ export class LaporanController {
     await this.logService.create({
       message: `Laporan berhasil ditambah`,
       user: req.user,
-      level: Level.INFO,
+      level: LevelEnum.INFO,
     });
     return { message: 'Laporan berhasil ditambah' };
   }
@@ -63,7 +63,7 @@ export class LaporanController {
     await this.logService.create({
       message: `Laporan dengan id ${_id} berhasil dihapus`,
       user: req.user,
-      level: Level.INFO,
+      level: LevelEnum.INFO,
     });
     return { message: 'Laporan berhasil dihapus' };
   }

@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 import { User } from '../../users/schemas/user.schema';
-import { Level } from '../enums/level.enum';
+import { LevelEnum } from '../enums/level.enum';
 
 export type LogDocument = HydratedDocument<Log>;
 
@@ -31,7 +31,7 @@ export class Log {
   message: string;
 
   @Prop()
-  level: Level;
+  level: LevelEnum;
 
   @Prop({ type: Types.ObjectId, ref: User.name })
   user: User;

@@ -16,7 +16,7 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 import { Request, Response } from 'express';
 import { UseAuth } from './decorators/auth.decorator';
 import { LogService } from '../log/log.service';
-import { Level } from '../log/enums/level.enum';
+import { LevelEnum } from '../log/enums/level.enum';
 import { UserDocument } from '../users/schemas/user.schema';
 
 @Controller('auth')
@@ -38,7 +38,7 @@ export class AuthController {
     await this.logService.create({
       message: `${payload.user.name} berhasil login`,
       user: payload.user,
-      level: Level.INFO,
+      level: LevelEnum.INFO,
     });
     res
       .cookie('auth-cookie', payload.accessToken, {
