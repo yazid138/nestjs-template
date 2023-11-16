@@ -16,9 +16,9 @@ export class AuthService {
     const user = await this.usersService.checkUser(email);
     if (!user || (user && !(await isMatch(password, user.password))))
       throw new UnauthorizedException();
-
     return {
       accessToken: await this.jwtService.signAsync({ _id: user._id }),
+      user,
     };
   }
 

@@ -14,6 +14,7 @@ export interface Response<T> {
   statusCode: number;
   message?: string;
   data?: T;
+  metadata?: any;
 }
 
 @Injectable()
@@ -41,6 +42,7 @@ export class ResponseTransformInterceptor<T>
         };
         if (r?.data) response.data = r.data;
         if (r?.message) response.message = r.message;
+        if (r?.metadata) response.metadata = r.metadata;
         if (!r?.data && !r?.message) response.data = r;
         return response;
       }),

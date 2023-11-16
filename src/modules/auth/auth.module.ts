@@ -6,6 +6,7 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { ConfigService } from '@nestjs/config';
 import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
+import { LogModule } from '../log/log.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { JwtModule } from '@nestjs/jwt';
       inject: [ConfigService],
     }),
     PassportModule,
+    LogModule,
   ],
   providers: [AuthService, LocalStrategy],
   controllers: [AuthController],

@@ -14,6 +14,7 @@ import { LaporanModule } from './modules/laporan/laporan.module';
 import { DocumentModule } from './modules/document/document.module';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { MongooseModule } from '@nestjs/mongoose';
+import { LogModule } from './modules/log/log.module';
 
 @Module({
   imports: [

@@ -17,12 +17,17 @@ import { UseGuards } from '@nestjs/common/decorators';
 import { LaporanGuard } from './guards/laporan.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserDocument } from '../users/schemas/user.schema';
+import { LogService } from '../log/log.service';
+import { Level } from '../log/enums/level.enum';
 
 @UseAuth()
 @Controller('laporan')
 @ApiTags('Laporan')
 export class LaporanController {
-  constructor(private readonly laporanService: LaporanService) {}
+  constructor(
+    private readonly laporanService: LaporanService,
+    private readonly logService: LogService,
+  ) {}
 
   @Post()
   @ApiConsumes('multipart/form-data')
@@ -34,6 +39,11 @@ export class LaporanController {
   ) {
     const user = req.user;
     await this.laporanService.create(user, file, data);
+    await this.logService.create({
+      message: `Laporan berhasil ditambah`,
+      user: req.user,
+      level: Level.INFO,
+    });
     return { message: 'Laporan berhasil ditambah' };
   }
 
@@ -45,8 +55,16 @@ export class LaporanController {
 
   @Delete(':id')
   @UseGuards(LaporanGuard)
-  async remove(@Param('id') _id: string) {
+  async remove(
+    @Param('id') _id: string,
+    @Req() req: Request & { user: UserDocument },
+  ) {
     await this.laporanService.removeById(_id);
+    await this.logService.create({
+      message: `Laporan dengan id ${_id} berhasil dihapus`,
+      user: req.user,
+      level: Level.INFO,
+    });
     return { message: 'Laporan berhasil dihapus' };
   }
 }

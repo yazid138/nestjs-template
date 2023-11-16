@@ -5,12 +5,14 @@ import { AuthModule } from '../auth/auth.module';
 import { DocumentModule } from '../document/document.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Laporan, LaporanSchema } from './schemas/laporan.schema';
+import { LogModule } from '../log/log.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Laporan.name, schema: LaporanSchema }]),
     AuthModule,
     DocumentModule,
+    LogModule,
   ],
   controllers: [LaporanController],
   providers: [LaporanService],

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
-import { hash } from '../../utils/hash';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
 
@@ -10,7 +9,6 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async create(data: CreateUserDto) {
-    data.password = await hash(data.password);
     const user = new this.userModel(data);
     return user.save();
   }

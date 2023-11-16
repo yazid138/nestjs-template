@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { Role } from '../../auth/enums/role.enum';
+import { hash } from '../../../utils/hash';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -20,3 +21,9 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+UserSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
+  this.password = await hash(this.password);
+  return next();
+});
