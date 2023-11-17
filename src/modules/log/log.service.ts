@@ -29,6 +29,9 @@ export class LogService {
   }
 
   findAll() {
-    return this.logModel.find().exec();
+    return this.logModel
+      .find()
+      .populate({ path: 'user', select: '-password' })
+      .exec();
   }
 }

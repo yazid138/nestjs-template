@@ -1,10 +1,10 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
   Post,
   Req,
+  BadRequestException,
 } from '@nestjs/common';
 import { LogService } from './log.service';
 import { UseAuth } from '../auth/decorators/auth.decorator';

@@ -8,6 +8,7 @@ import {
   Req,
   UploadedFile,
   UseInterceptors,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { LaporanService } from './laporan.service';
 import { CreateLaporanDto } from './dto/create-laporan.dto';
@@ -40,12 +41,20 @@ export class LaporanController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     const user = req.user;
-    await this.laporanService.create(user, file, data);
-    await this.logService.create(
-      req,
-      new Log(LevelEnum.INFO, 'Laporan berhasil ditambah'),
-    );
-    return { message: 'Laporan berhasil ditambah' };
+    try {
+      await this.laporanService.create(user, file, data);
+      await this.logService.create(
+        req,
+        new Log(LevelEnum.INFO, 'Laporan berhasil ditambah', user),
+      );
+      return { message: 'Laporan berhasil ditambah' };
+    } catch (e) {
+      await this.logService.create(
+        req,
+        new Log(LevelEnum.INFO, 'Laporan gagal ditambah', user),
+      );
+      throw new InternalServerErrorException(e.message);
+    }
   }
 
   @Get()
@@ -60,11 +69,20 @@ export class LaporanController {
     @Param('id') _id: string,
     @Req() req: Request & { user: UserDocument },
   ) {
-    await this.laporanService.removeById(_id);
-    await this.logService.create(
-      req,
-      new Log(LevelEnum.INFO, 'Laporan berhasil dihapus'),
-    );
-    return { message: 'Laporan berhasil dihapus' };
+    const user = req.user;
+    try {
+      await this.laporanService.removeById(_id);
+      await this.logService.create(
+        req,
+        new Log(LevelEnum.INFO, 'Laporan berhasil dihapus', user),
+      );
+      return { message: 'Laporan berhasil dihapus' };
+    } catch (e) {
+      await this.logService.create(
+        req,
+        new Log(LevelEnum.INFO, 'Laporan gagal dihapus', user),
+      );
+      throw new InternalServerErrorException(e.message);
+    }
   }
 }
