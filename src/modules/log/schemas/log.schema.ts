@@ -7,22 +7,19 @@ export type LogDocument = HydratedDocument<Log>;
 
 export class Meta {
   @Prop()
-  os: string;
+  os?: string;
 
   @Prop()
-  ipV4: string;
+  ip?: string;
 
   @Prop()
-  ipV6: string;
+  userAgent?: string;
 
   @Prop()
-  userAgent: string;
+  method?: string;
 
   @Prop()
-  method: string;
-
-  @Prop()
-  path: string;
+  path?: string;
 }
 
 @Schema({ timestamps: true })

@@ -7,10 +7,11 @@ import {
 } from '@nestjs/common';
 import { LogService } from './log.service';
 import { UseAuth } from '../auth/decorators/auth.decorator';
-import { Log } from './schemas/log.schema';
 import { CreateLogDto } from './dto/create-log.dto';
 import { UsersService } from '../users/users.service';
 import { ApiTags } from '@nestjs/swagger';
+import { UserDocument } from '../users/schemas/user.schema';
+import { Request } from 'express';
 
 @Controller('log')
 @ApiTags('Log')
@@ -21,15 +22,17 @@ export class LogController {
   ) {}
 
   @Post()
-  async create(@Body() createLogDto: CreateLogDto) {
-    const log = new Log();
-    log.level = createLogDto.level;
-    log.message = createLogDto.message;
-    log.meta = createLogDto.meta;
+  async create(
+    @Body() createLogDto: CreateLogDto,
+    req: Request & { user: UserDocument },
+  ) {
     const user = await this.userService.findById(createLogDto.user);
     if (!user) throw new BadRequestException('User not found');
-    log.user = user;
-    return this.logService.create(log);
+    return this.logService.create(
+      req,
+      createLogDto.level,
+      createLogDto.message,
+    );
   }
 
   @UseAuth()

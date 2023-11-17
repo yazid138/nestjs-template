@@ -35,11 +35,11 @@ export class AuthController {
     @Res() res: Response,
   ) {
     const payload = req.user;
-    await this.logService.create({
-      message: `${payload.user.name} berhasil login`,
-      user: payload.user,
-      level: LevelEnum.INFO,
-    });
+    await this.logService.create(
+      req,
+      LevelEnum.INFO,
+      `${payload.user.name} berhasil Login`,
+    );
     res
       .cookie('auth-cookie', payload.accessToken, {
         httpOnly: true,
