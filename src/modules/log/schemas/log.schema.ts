@@ -31,10 +31,17 @@ export class Log {
   level: LevelEnum;
 
   @Prop({ type: Types.ObjectId, ref: User.name })
-  user: User;
+  user?: User;
 
   @Prop()
   meta?: Meta;
+
+  constructor(level: LevelEnum, message: string, user?: User, meta?: Meta) {
+    this.message = message;
+    this.level = level;
+    this.user = user;
+    this.meta = meta;
+  }
 }
 
 export const LogSchema = SchemaFactory.createForClass(Log);

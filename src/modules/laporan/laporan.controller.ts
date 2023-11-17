@@ -20,6 +20,7 @@ import { UserDocument } from '../users/schemas/user.schema';
 import { LogService } from '../log/log.service';
 import { LevelEnum } from '../log/enums/level.enum';
 import { Request } from 'express';
+import { Log } from '../log/schemas/log.schema';
 
 @UseAuth()
 @Controller('laporan')
@@ -42,8 +43,7 @@ export class LaporanController {
     await this.laporanService.create(user, file, data);
     await this.logService.create(
       req,
-      LevelEnum.INFO,
-      'Laporan berhasil ditambah',
+      new Log(LevelEnum.INFO, 'Laporan berhasil ditambah'),
     );
     return { message: 'Laporan berhasil ditambah' };
   }
@@ -63,8 +63,7 @@ export class LaporanController {
     await this.laporanService.removeById(_id);
     await this.logService.create(
       req,
-      LevelEnum.INFO,
-      'Laporan berhasil dihapus',
+      new Log(LevelEnum.INFO, 'Laporan berhasil dihapus'),
     );
     return { message: 'Laporan berhasil dihapus' };
   }

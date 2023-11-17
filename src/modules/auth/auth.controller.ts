@@ -18,6 +18,7 @@ import { UseAuth } from './decorators/auth.decorator';
 import { LogService } from '../log/log.service';
 import { LevelEnum } from '../log/enums/level.enum';
 import { UserDocument } from '../users/schemas/user.schema';
+import { Log } from '../log/schemas/log.schema';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -36,9 +37,12 @@ export class AuthController {
   ) {
     const payload = req.user;
     await this.logService.create(
-      req,
-      LevelEnum.INFO,
-      `${payload.user.name} berhasil Login`,
+      req as any,
+      new Log(
+        LevelEnum.INFO,
+        `${payload.user.name} berhasil Login`,
+        payload.user,
+      ),
     );
     res
       .cookie('auth-cookie', payload.accessToken, {

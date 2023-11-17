@@ -33,7 +33,6 @@ import { UserExistsValidator } from './common/validation/user-exists.validator';
         uri: configService.get<string>('MONGO_URL'),
       }),
     }),
-    TerminusModule,
     WinstonModule.forRoot({
       level: 'warn',
       format: Winston.format.printf((info) => {
@@ -52,6 +51,7 @@ import { UserExistsValidator } from './common/validation/user-exists.validator';
         }),
       ],
     }),
+    TerminusModule,
     AuthModule,
     UsersModule,
     DocumentModule,
