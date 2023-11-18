@@ -55,11 +55,11 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   // Global Interceptors
   app.useGlobalInterceptors(new ResponseTransformInterceptor());
 
-  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   // Global Filters
   app.useGlobalFilters(new AllExceptionFilter());
