@@ -9,7 +9,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { ResponseTransformInterceptor } from 'src/common/interceptors/response-transform.interceptor';
 import { LoginDto } from './dto/login.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
@@ -60,6 +60,7 @@ export class AuthController {
   }
 
   @UseAuth()
+  @ApiBearerAuth()
   @Delete('logout')
   async logout(@Res() res: Response) {
     res.clearCookie('auth-cookie').json({

@@ -70,7 +70,7 @@ async function bootstrap() {
     .setDescription(`The ${configService.get('APP_NAME')} API description`)
     .setVersion('1.0')
     .addServer(`/${prefix}`)
-    .addCookieAuth('auth-cookie')
+    .addBearerAuth()
     .build();
 
   const swaggerDocumentOptions: SwaggerDocumentOptions = {

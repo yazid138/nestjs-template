@@ -13,7 +13,12 @@ import {
 import { LaporanService } from './laporan.service';
 import { CreateLaporanDto } from './dto/create-laporan.dto';
 import { UseAuth } from '../auth/decorators/auth.decorator';
-import { ApiConsumes, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiConsumes,
+  ApiCookieAuth,
+  ApiTags,
+} from '@nestjs/swagger';
 import { UseGuards } from '@nestjs/common/decorators';
 import { LaporanGuard } from './guards/laporan.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -26,6 +31,7 @@ import { Log } from '../log/schemas/log.schema';
 @UseAuth()
 @Controller('laporan')
 @ApiTags('Laporan')
+@ApiBearerAuth()
 export class LaporanController {
   constructor(
     private readonly laporanService: LaporanService,
