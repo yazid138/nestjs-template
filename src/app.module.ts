@@ -13,6 +13,7 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LogModule } from './modules/log/log.module';
 import { UserExistsValidator } from './common/validation/user-exists.validator';
+import { MenuModule } from './modules/menu/menu.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { UserExistsValidator } from './common/validation/user-exists.validator';
     DocumentModule,
     LaporanModule,
     LogModule,
+    MenuModule,
   ],
   controllers: [AppController],
   providers: [UserExistsValidator],

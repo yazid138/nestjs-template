@@ -25,6 +25,7 @@ export class UsersService {
           password: 0,
         },
       )
+      .populate({ path: 'menu' })
       .exec();
   }
 }

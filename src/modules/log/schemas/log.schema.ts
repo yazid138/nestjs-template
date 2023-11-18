@@ -31,12 +31,17 @@ export class Log {
   level: LevelEnum;
 
   @Prop({ type: Types.ObjectId, ref: User.name })
-  user?: User;
+  user?: User | Types.ObjectId;
 
   @Prop()
   meta?: Meta;
 
-  constructor(level: LevelEnum, message: string, user?: User, meta?: Meta) {
+  constructor(
+    level: LevelEnum,
+    message: string,
+    user?: User | Types.ObjectId,
+    meta?: Meta,
+  ) {
     this.message = message;
     this.level = level;
     this.user = user;

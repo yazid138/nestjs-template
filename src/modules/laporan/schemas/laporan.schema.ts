@@ -12,7 +12,7 @@ export class Laporan {
   description: string;
 
   @Prop({ type: Types.ObjectId, ref: Document.name })
-  document: Document;
+  document: Document | Types.ObjectId;
 
   @Prop()
   role: Role;
@@ -21,10 +21,10 @@ export class Laporan {
   password: string;
 
   @Prop({ type: Types.ObjectId, ref: User.name })
-  createdBy: User;
+  createdBy: User | Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: User.name })
-  updatedBy: User;
+  updatedBy: User | Types.ObjectId;
 }
 
 export const LaporanSchema = SchemaFactory.createForClass(Laporan);

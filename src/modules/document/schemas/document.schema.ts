@@ -16,7 +16,7 @@ export class Document {
   type: string;
 
   @Prop({ type: Types.ObjectId, ref: Chunk.name })
-  chunk: Chunk;
+  chunk: Chunk | Types.ObjectId;
 }
 
 export const DocumentSchema = SchemaFactory.createForClass(Document);

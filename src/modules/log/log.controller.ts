@@ -10,7 +10,7 @@ import { LogService } from './log.service';
 import { UseAuth } from '../auth/decorators/auth.decorator';
 import { CreateLogDto } from './dto/create-log.dto';
 import { UsersService } from '../users/users.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserDocument } from '../users/schemas/user.schema';
 import { Request } from 'express';
 import { Log } from './schemas/log.schema';
@@ -24,6 +24,10 @@ export class LogController {
   ) {}
 
   @Post()
+  @ApiOperation({
+    summary: 'Create log',
+    description: 'Ini adalah deskripsi dari API',
+  })
   async create(
     @Body() createLogDto: CreateLogDto,
     @Req() req: Request & { user: UserDocument },
@@ -47,6 +51,7 @@ export class LogController {
 
   @UseAuth()
   @Get()
+  @ApiOperation({ summary: 'Get all log' })
   async findAll() {
     return this.logService.findAll();
   }
